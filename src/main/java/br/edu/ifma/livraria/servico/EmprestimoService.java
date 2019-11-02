@@ -13,9 +13,14 @@ public class EmprestimoService {
         if (livro.isReservado()) {
             throw new EmprestimoNaoRealizadoException("Livro Reservado");
         }
+        if (usuario.getEmprestimos().size() == 2) {
+            throw new EmprestimoNaoRealizadoException("Máximo de 2 empréstimos simultaneos.");
+        }
+
         Emprestimo emprestimo = new Emprestimo(usuario, livro, LocalDate.now());
         livro.adicionaEmprestimo(emprestimo);
         usuario.adicionaEmprestimo(emprestimo);
+
         return emprestimo;
     }
 

@@ -79,4 +79,21 @@ public class EmprestimoServiceTest {
         assertEquals(2, usuario.getEmprestimos().size());
     }
 
+    @Test
+    public void naoDeveTerTresEmprestimosSimultaneosParaUmUsuario() {
+        EmprestimoService emprestimoService = new EmprestimoService();
+        Usuario usuario = new Usuario("James", "A0001");
+        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        Livro livro2 = new Livro("Domain Driven Design", "Eric Evans");
+        Livro livro3 = new Livro("The Pragmatic Programmer", "Andrew Hunt & David Thomas");
+
+        emprestimoService.emprestaLivro(usuario, livro);
+        emprestimoService.emprestaLivro(usuario, livro2);
+        EmprestimoNaoRealizadoException ex = assertThrows(EmprestimoNaoRealizadoException.class,
+                () -> emprestimoService.emprestaLivro(usuario, livro3),
+                "Deveria lançar EmprestimoNaoRealizadoException.");
+
+        assertTrue(ex.getMessage().equals("Máximo de 2 empréstimos simultaneos."));
+    }
+
 }
