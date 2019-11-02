@@ -2,6 +2,8 @@ package br.edu.ifma.livraria.modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 public class Emprestimo {
 
@@ -12,10 +14,15 @@ public class Emprestimo {
     private LocalDate dataDevolucao;
     private BigDecimal valorPago;
 
+    public static final int DIAS_PARA_DEVOLUCAO = 7;
+    public static final BigDecimal VALOR_FIXO_PAGAMENTO = BigDecimal.valueOf(5.0);
+    public static final BigDecimal MULTA_POR_DIA_DE_ATRASO_NO_PAGAMENTO = BigDecimal.valueOf(0.40);
+
     public Emprestimo(Usuario usuario, Livro livro, LocalDate dataEmprestimo) {
         this.setUsuario(usuario);
         this.setLivro(livro);
         this.setDataEmprestimo(dataEmprestimo);
+        this.setDataPrevista(dataEmprestimo.plusDays(DIAS_PARA_DEVOLUCAO));
     }
 
     public Usuario getUsuario() {
@@ -23,6 +30,9 @@ public class Emprestimo {
     }
 
     public void setUsuario(Usuario usuario) {
+        if (Objects.isNull(usuario)) {
+            throw new IllegalArgumentException("Usuário Inválido");
+        }
         this.usuario = usuario;
     }
 
@@ -31,6 +41,9 @@ public class Emprestimo {
     }
 
     public void setLivro(Livro livro) {
+        if (Objects.isNull(livro)) {
+            throw new IllegalArgumentException("Livro Inválido");
+        }
         this.livro = livro;
     }
 
@@ -39,6 +52,9 @@ public class Emprestimo {
     }
 
     public void setDataEmprestimo(LocalDate dataEmprestimo) {
+        if (Objects.isNull(dataEmprestimo)) {
+            throw new IllegalArgumentException("Data de Empréstimo Inválida");
+        }
         this.dataEmprestimo = dataEmprestimo;
     }
 
@@ -64,6 +80,11 @@ public class Emprestimo {
 
     public void setValorPago(BigDecimal valorPago) {
         this.valorPago = valorPago;
+    }
+
+    // TODO Implements
+    public List<Emprestimo> consultaEmprestimosPorUsuario() {
+        return null;
     }
 
 }
