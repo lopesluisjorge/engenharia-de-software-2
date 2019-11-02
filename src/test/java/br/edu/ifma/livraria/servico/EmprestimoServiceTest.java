@@ -55,4 +55,28 @@ public class EmprestimoServiceTest {
         assertEquals(LocalDate.now().plusDays(7), emprestimo.getDataPrevista());
     }
 
+    @Test
+    public void deveTerUsuarioComUmEmprestimo() {
+        Usuario usuario = new Usuario("James", "A0001");
+        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        EmprestimoService emprestimoService = new EmprestimoService();
+
+        emprestimoService.emprestaLivro(usuario, livro);
+
+        assertEquals(1, usuario.getEmprestimos().size());
+    }
+
+    @Test
+    public void deveTerUsuarioComDoisEmprestimos() {
+        EmprestimoService emprestimoService = new EmprestimoService();
+        Usuario usuario = new Usuario("James", "A0001");
+        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        Livro livro2 = new Livro("Domain Driven Design", "Eric Evans");
+
+        emprestimoService.emprestaLivro(usuario, livro);
+        emprestimoService.emprestaLivro(usuario, livro2);
+
+        assertEquals(2, usuario.getEmprestimos().size());
+    }
+
 }

@@ -83,7 +83,7 @@ public class Emprestimo {
     }
 
     // TODO Implements
-    public List<Emprestimo> consultaEmprestimosPorUsuario() {
+    public List<Emprestimo> consultaEmprestimosPorUsuario(Usuario usuario) {
         return null;
     }
 

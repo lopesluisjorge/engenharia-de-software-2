@@ -15,6 +15,7 @@ public class EmprestimoService {
         }
         Emprestimo emprestimo = new Emprestimo(usuario, livro, LocalDate.now());
         livro.adicionaEmprestimo(emprestimo);
+        usuario.adicionaEmprestimo(emprestimo);
         return emprestimo;
     }
 

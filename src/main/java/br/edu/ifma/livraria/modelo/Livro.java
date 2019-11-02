@@ -6,31 +6,23 @@ import java.util.List;
 
 public class Livro {
 
-    private String autor;
-    private String titulo;
+    private final String autor;
+    private final String titulo;
     private boolean isEmprestado = false;
     private boolean isReservado = false;
     private final List<Emprestimo> historico = new ArrayList<>();
 
     public Livro(String titulo, String autor) {
-        this.setTitulo(titulo);
-        this.setAutor(autor);
+        this.titulo = titulo;
+        this.autor = autor;
     }
 
     public String getAutor() {
         return autor;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
     public String getTitulo() {
         return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
     }
 
     public boolean isEmprestado() {
