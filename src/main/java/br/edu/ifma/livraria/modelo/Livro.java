@@ -8,8 +8,8 @@ public class Livro {
 
     private String autor;
     private String titulo;
-    private boolean isEmprestado;
-    private boolean isReservado;
+    private boolean isEmprestado = false;
+    private boolean isReservado = false;
     private final List<Emprestimo> historico = new ArrayList<>();
 
     public Livro(String titulo, String autor) {
@@ -51,6 +51,7 @@ public class Livro {
 
     public void adicionaEmprestimo(Emprestimo emprestimo) {
         historico.add(emprestimo);
+        setEmprestado(true);
     }
 
     public List<Emprestimo> getHistorico() {

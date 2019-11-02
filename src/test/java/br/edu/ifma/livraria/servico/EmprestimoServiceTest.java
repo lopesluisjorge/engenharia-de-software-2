@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 import br.edu.ifma.livraria.exception.EmprestimoNaoRealizadoException;
@@ -17,8 +19,8 @@ public class EmprestimoServiceTest {
     public void deveEmprestarLivroQueNaoEstejaReservado() {
         Usuario usuario = new Usuario("James", "A0001");
         Livro livro = new Livro("Clean Code", "Robert C. Martin");
-
         EmprestimoService emprestimoService = new EmprestimoService();
+
         Emprestimo emprestimoRealizado = emprestimoService.emprestaLivro(usuario, livro);
 
         assertTrue(emprestimoRealizado.getLivro().isEmprestado());
@@ -31,15 +33,26 @@ public class EmprestimoServiceTest {
     public void naoDeveEmprestarLivroQuePosuiReserva() {
         Usuario usuario = new Usuario("James", "A0001");
         Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        livro.setReservado(true);
-
         EmprestimoService emprestimoService = new EmprestimoService();
+
+        livro.setReservado(true);
 
         EmprestimoNaoRealizadoException ex = assertThrows(EmprestimoNaoRealizadoException.class,
                 () -> emprestimoService.emprestaLivro(usuario, livro),
                 "Deveria lançar EmprestimoNaoRealizadoException");
 
         assertTrue(ex.getMessage().equals("Livro Reservado"));
+    }
+
+    @Test
+    public void deveTerDataPrevistaCorreta() {
+        Usuario usuario = new Usuario("James", "A0001");
+        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        EmprestimoService emprestimoService = new EmprestimoService();
+
+        Emprestimo emprestimo = emprestimoService.emprestaLivro(usuario, livro);
+
+        assertEquals(LocalDate.now().plusDays(7), emprestimo.getDataPrevista());
     }
 
 }

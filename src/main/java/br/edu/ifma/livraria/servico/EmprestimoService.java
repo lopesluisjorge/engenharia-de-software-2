@@ -14,7 +14,6 @@ public class EmprestimoService {
             throw new EmprestimoNaoRealizadoException("Livro Reservado");
         }
         Emprestimo emprestimo = new Emprestimo(usuario, livro, LocalDate.now());
-        livro.setEmprestado(true);
         livro.adicionaEmprestimo(emprestimo);
         return emprestimo;
     }
