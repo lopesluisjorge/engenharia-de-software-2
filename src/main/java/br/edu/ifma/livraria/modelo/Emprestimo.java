@@ -15,8 +15,8 @@ public class Emprestimo {
     private BigDecimal valorPago;
 
     public static final int DIAS_PARA_DEVOLUCAO = 7;
-    public static final BigDecimal VALOR_FIXO_PAGAMENTO = BigDecimal.valueOf(5.0);
-    public static final BigDecimal MULTA_POR_DIA_DE_ATRASO_NO_PAGAMENTO = BigDecimal.valueOf(0.40);
+    public static final BigDecimal VALOR_FIXO_PAGAMENTO = new BigDecimal("5.0");
+    public static final BigDecimal MULTA_POR_DIA_DE_ATRASO_NO_PAGAMENTO = new BigDecimal("0.40");
 
     public Emprestimo(Usuario usuario, Livro livro, LocalDate dataEmprestimo) {
         this.setUsuario(usuario);

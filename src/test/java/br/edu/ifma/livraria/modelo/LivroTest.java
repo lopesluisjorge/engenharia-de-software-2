@@ -14,7 +14,7 @@ public class LivroTest {
     private Livro livro;
 
     @BeforeEach
-    public void beforeAll() {
+    public void beforeEach() {
         livro = new Livro("Clean Code: A Handbook of Agile Software Craftsmanship", "Robert C. Martin");
     }
 

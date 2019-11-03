@@ -94,6 +94,7 @@ public class EmprestimoServiceTest {
                 "Deveria lançar EmprestimoNaoRealizadoException.");
 
         assertTrue(ex.getMessage().equals("Máximo de 2 empréstimos simultaneos."));
+        assertEquals(2, usuario.getEmprestimos().size());
     }
 
 }
