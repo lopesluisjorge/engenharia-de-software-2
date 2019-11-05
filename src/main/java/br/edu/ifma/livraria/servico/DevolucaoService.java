@@ -9,7 +9,7 @@ import br.edu.ifma.livraria.modelo.Emprestimo;
 public class DevolucaoService {
 
     public void devolverLivro(Emprestimo emprestimo, LocalDate dataDevolucao) {
-        emprestimo.getLivro().setEmprestado(false);
+        emprestimo.getLivro().devolver();
         emprestimo.setDataDevolucao(dataDevolucao);
 
         BigDecimal valorFixo = Emprestimo.VALOR_FIXO_PAGAMENTO;

@@ -29,21 +29,25 @@ public class Livro {
         return isEmprestado;
     }
 
-    public void setEmprestado(boolean isEmprestado) {
-        this.isEmprestado = isEmprestado;
+    public void emprestar() {
+        this.isEmprestado = true;
+    }
+
+    public void devolver() {
+        this.isEmprestado = false;
     }
 
     public boolean isReservado() {
         return isReservado;
     }
 
-    public void setReservado(boolean isReservado) {
-        this.isReservado = isReservado;
+    public void reservar() {
+        this.isReservado = true;
     }
 
     public void adicionaEmprestimo(Emprestimo emprestimo) {
         historico.add(emprestimo);
-        setEmprestado(true);
+        emprestar();
     }
 
     public List<Emprestimo> getHistorico() {

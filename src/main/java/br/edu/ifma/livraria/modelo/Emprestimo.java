@@ -62,7 +62,7 @@ public class Emprestimo {
         return dataPrevista;
     }
 
-    public void setDataPrevista(LocalDate dataPrevista) {
+    private void setDataPrevista(LocalDate dataPrevista) {
         this.dataPrevista = dataPrevista;
     }
 

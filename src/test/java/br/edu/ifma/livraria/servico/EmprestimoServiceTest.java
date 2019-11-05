@@ -41,7 +41,7 @@ public class EmprestimoServiceTest {
         Usuario usuario = new Usuario("James", "A0001");
         Livro livro = new Livro("Clean Code", "Robert C. Martin");
 
-        livro.setReservado(true);
+        livro.reservar();
 
         EmprestimoNaoRealizadoException ex = assertThrows(EmprestimoNaoRealizadoException.class,
                 () -> emprestimoService.emprestaLivro(usuario, livro),

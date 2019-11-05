@@ -20,7 +20,7 @@ public class LivroTest {
 
     @Test
     public void deveEstarEmprestado() {
-        livro.setEmprestado(true);
+        livro.emprestar();
 
         assertTrue(livro.isEmprestado());
     }
@@ -32,7 +32,7 @@ public class LivroTest {
 
     @Test
     public void deveEstarReservado() {
-        livro.setReservado(true);
+        livro.reservar();
 
         assertTrue(livro.isReservado());
     }
