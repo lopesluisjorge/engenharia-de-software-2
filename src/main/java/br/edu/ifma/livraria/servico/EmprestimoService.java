@@ -10,6 +10,9 @@ import br.edu.ifma.livraria.modelo.Usuario;
 public class EmprestimoService {
 
     public Emprestimo emprestaLivro(Usuario usuario, Livro livro) {
+        if (livro.isEmprestado()) {
+            throw new EmprestimoNaoRealizadoException("Livro já está emprestado.");
+        }
         if (livro.isReservado()) {
             throw new EmprestimoNaoRealizadoException("Livro Reservado");
         }

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import br.edu.ifma.livraria.exception.EmprestimoNaoRealizadoException;
@@ -15,11 +16,17 @@ import br.edu.ifma.livraria.modelo.Usuario;
 
 public class EmprestimoServiceTest {
 
+    private EmprestimoService emprestimoService;
+
+    @BeforeEach
+    public void beforeEach() {
+        emprestimoService = new EmprestimoService();
+    }
+
     @Test
     public void deveEmprestarLivroQueNaoEstejaReservado() {
         Usuario usuario = new Usuario("James", "A0001");
         Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        EmprestimoService emprestimoService = new EmprestimoService();
 
         Emprestimo emprestimoRealizado = emprestimoService.emprestaLivro(usuario, livro);
 
@@ -33,7 +40,6 @@ public class EmprestimoServiceTest {
     public void naoDeveEmprestarLivroQuePosuiReserva() {
         Usuario usuario = new Usuario("James", "A0001");
         Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        EmprestimoService emprestimoService = new EmprestimoService();
 
         livro.setReservado(true);
 
@@ -45,10 +51,23 @@ public class EmprestimoServiceTest {
     }
 
     @Test
+    public void naoDeveEmprestarLivroQueJaEstejaEmprestado() {
+        Usuario usuario = new Usuario("James", "A0001");
+        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+
+        Emprestimo emprestimoRealizado = emprestimoService.emprestaLivro(usuario, livro);
+        EmprestimoNaoRealizadoException ex = assertThrows(EmprestimoNaoRealizadoException.class,
+                () -> emprestimoService.emprestaLivro(usuario, livro),
+                "Deveria Lançar EmprestimoNaoRealizadoException");
+
+        assertTrue(ex.getMessage().equals("Livro já está emprestado."));
+        assertTrue(emprestimoRealizado.getLivro().isEmprestado());
+    }
+
+    @Test
     public void deveTerDataPrevistaCorreta() {
         Usuario usuario = new Usuario("James", "A0001");
         Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        EmprestimoService emprestimoService = new EmprestimoService();
 
         Emprestimo emprestimo = emprestimoService.emprestaLivro(usuario, livro);
 
@@ -59,7 +78,6 @@ public class EmprestimoServiceTest {
     public void deveTerUsuarioComUmEmprestimo() {
         Usuario usuario = new Usuario("James", "A0001");
         Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        EmprestimoService emprestimoService = new EmprestimoService();
 
         emprestimoService.emprestaLivro(usuario, livro);
 
@@ -68,7 +86,6 @@ public class EmprestimoServiceTest {
 
     @Test
     public void deveTerUsuarioComDoisEmprestimos() {
-        EmprestimoService emprestimoService = new EmprestimoService();
         Usuario usuario = new Usuario("James", "A0001");
         Livro livro = new Livro("Clean Code", "Robert C. Martin");
         Livro livro2 = new Livro("Domain Driven Design", "Eric Evans");
@@ -81,7 +98,6 @@ public class EmprestimoServiceTest {
 
     @Test
     public void naoDeveTerTresEmprestimosSimultaneosParaUmUsuario() {
-        EmprestimoService emprestimoService = new EmprestimoService();
         Usuario usuario = new Usuario("James", "A0001");
         Livro livro = new Livro("Clean Code", "Robert C. Martin");
         Livro livro2 = new Livro("Domain Driven Design", "Eric Evans");
