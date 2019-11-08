@@ -2,10 +2,9 @@ package br.edu.ifma.livraria.modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
-public class Emprestimo {
+public final class Emprestimo {
 
     private Usuario usuario;
     private Livro livro;
@@ -22,17 +21,18 @@ public class Emprestimo {
         this.setUsuario(usuario);
         this.setLivro(livro);
         this.setDataEmprestimo(dataEmprestimo);
-        this.setDataPrevista(dataEmprestimo.plusDays(DIAS_PARA_DEVOLUCAO));
+        dataPrevista = dataEmprestimo.plusDays(DIAS_PARA_DEVOLUCAO);
     }
 
     public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    private void setUsuario(Usuario usuario) {
         if (Objects.isNull(usuario)) {
             throw new IllegalArgumentException("Usuário Inválido");
         }
+
         this.usuario = usuario;
     }
 
@@ -40,10 +40,11 @@ public class Emprestimo {
         return livro;
     }
 
-    public void setLivro(Livro livro) {
+    private void setLivro(Livro livro) {
         if (Objects.isNull(livro)) {
             throw new IllegalArgumentException("Livro Inválido");
         }
+
         this.livro = livro;
     }
 
@@ -51,10 +52,11 @@ public class Emprestimo {
         return dataEmprestimo;
     }
 
-    public void setDataEmprestimo(LocalDate dataEmprestimo) {
+    private void setDataEmprestimo(LocalDate dataEmprestimo) {
         if (Objects.isNull(dataEmprestimo)) {
             throw new IllegalArgumentException("Data de Empréstimo Inválida");
         }
+
         this.dataEmprestimo = dataEmprestimo;
     }
 
@@ -62,15 +64,15 @@ public class Emprestimo {
         return dataPrevista;
     }
 
-    private void setDataPrevista(LocalDate dataPrevista) {
-        this.dataPrevista = dataPrevista;
-    }
-
     public LocalDate getDataDevolucao() {
         return dataDevolucao;
     }
 
     public void setDataDevolucao(LocalDate dataDevolucao) {
+        if (dataEmprestimo.isAfter(dataDevolucao)) {
+            throw new IllegalArgumentException("Data de devolução deve ser posterior à data de empréstimo");
+        }
+
         this.dataDevolucao = dataDevolucao;
     }
 
@@ -80,11 +82,6 @@ public class Emprestimo {
 
     public void setValorPago(BigDecimal valorPago) {
         this.valorPago = valorPago;
-    }
-
-    // TODO Implements
-    public List<Emprestimo> consultaEmprestimosPorUsuario(Usuario usuario) {
-        return null;
     }
 
 }

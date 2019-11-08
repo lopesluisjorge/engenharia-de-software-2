@@ -19,13 +19,6 @@ public class LivroTest {
     }
 
     @Test
-    public void deveEstarEmprestado() {
-        livro.emprestar();
-
-        assertTrue(livro.isEmprestado());
-    }
-
-    @Test
     public void naoPodeEstarEmprestado() {
         assertFalse(livro.isEmprestado());
     }

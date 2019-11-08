@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Livro {
+public final class Livro {
 
     private final String autor;
     private final String titulo;
@@ -29,10 +29,6 @@ public class Livro {
         return isEmprestado;
     }
 
-    public void emprestar() {
-        this.isEmprestado = true;
-    }
-
     public void devolver() {
         this.isEmprestado = false;
     }
@@ -47,7 +43,7 @@ public class Livro {
 
     public void adicionaEmprestimo(Emprestimo emprestimo) {
         historico.add(emprestimo);
-        emprestar();
+        isEmprestado = true;
     }
 
     public List<Emprestimo> getHistorico() {

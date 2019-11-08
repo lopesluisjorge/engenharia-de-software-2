@@ -1,6 +1,7 @@
 package br.edu.ifma.livraria.servico;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import br.edu.ifma.livraria.exception.EmprestimoNaoRealizadoException;
 import br.edu.ifma.livraria.modelo.Emprestimo;
@@ -16,7 +17,11 @@ public class EmprestimoService {
         if (livro.isReservado()) {
             throw new EmprestimoNaoRealizadoException("Livro Reservado");
         }
-        if (usuario.getEmprestimos().size() == 2) {
+        Long quantidadeDeEmprestimosNaoDevolvolvidos =
+                usuario.getEmprestimos().stream()
+                        .filter((emprestimo) -> Objects.isNull(emprestimo.getDataDevolucao()))
+                        .count();
+        if (quantidadeDeEmprestimosNaoDevolvolvidos == 2L) {
             throw new EmprestimoNaoRealizadoException("Máximo de 2 empréstimos simultaneos.");
         }
 

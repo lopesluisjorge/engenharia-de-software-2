@@ -1,6 +1,8 @@
 package br.edu.ifma.livraria.servico;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -111,6 +113,24 @@ public class EmprestimoServiceTest {
 
         assertTrue(ex.getMessage().equals("Máximo de 2 empréstimos simultaneos."));
         assertEquals(2, usuario.getEmprestimos().size());
+    }
+
+    @Test
+    public void usuarioDevePoderTerTerceiroEmprestimoQuandoDevolverAoMenosUmDeDoisLivrosAnteriormenteEmprestados() {
+        DevolucaoService devolucaoService = new DevolucaoService();
+        Usuario usuario = new Usuario("James", "A0001");
+        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        Livro livro2 = new Livro("Domain Driven Design", "Eric Evans");
+        Livro livro3 = new Livro("The Pragmatic Programmer", "Andrew Hunt & David Thomas");
+
+        Emprestimo emprestimo = emprestimoService.emprestaLivro(usuario, livro);
+        Emprestimo emprestimo2 = emprestimoService.emprestaLivro(usuario, livro2);
+        devolucaoService.devolverLivro(emprestimo, LocalDate.now());
+        Emprestimo emprestimo3 = emprestimoService.emprestaLivro(usuario, livro3);
+
+        assertNotNull(emprestimo.getDataDevolucao());
+        assertNull(emprestimo2.getDataDevolucao());
+        assertNull(emprestimo3.getDataDevolucao());
     }
 
 }
