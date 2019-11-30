@@ -21,6 +21,10 @@ public final class Usuario {
     @OneToMany(mappedBy = "usuario")
     private final List<Emprestimo> emprestimos = new ArrayList<>();
 
+    public Usuario() {
+
+    }
+    
     public Usuario(String nome, String matricula) {
         this.nome = nome;
         this.matricula = matricula;

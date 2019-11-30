@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,10 +18,10 @@ public final class Emprestimo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(columnDefinition = "usuario_id")
     private Usuario usuario;
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(columnDefinition = "livro_id")
     private Livro livro;
     private LocalDate dataEmprestimo;
@@ -31,6 +32,10 @@ public final class Emprestimo {
     public static final int DIAS_PARA_DEVOLUCAO = 7;
     public static final BigDecimal VALOR_FIXO_PAGAMENTO = new BigDecimal("5.0");
     public static final BigDecimal MULTA_POR_DIA_DE_ATRASO_NO_PAGAMENTO = new BigDecimal("0.40");
+
+    public Emprestimo() {
+
+    }
 
     public Emprestimo(Usuario usuario, Livro livro, LocalDate dataEmprestimo) {
         this.setUsuario(usuario);
