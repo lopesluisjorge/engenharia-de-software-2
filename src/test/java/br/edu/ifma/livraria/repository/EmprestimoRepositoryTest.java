@@ -1,9 +1,11 @@
 package br.edu.ifma.livraria.repository;
 
+import static br.edu.ifma.livraria.databuilder.EmprestimoBuilder.umEmprestimoDolivro;
+import static br.edu.ifma.livraria.databuilder.LivroBuilder.umLivro;
+import static br.edu.ifma.livraria.databuilder.UsuarioBuilder.umUsuario;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -24,6 +26,7 @@ public class EmprestimoRepositoryTest {
 
     private EntityManager manager;
     private static EntityManagerFactory emf;
+    private UsuarioRepository usuarioRepository;
     private LivroRepository livroRepository;
     private EmprestimoRepository emprestimoRepository;
 
@@ -37,6 +40,7 @@ public class EmprestimoRepositoryTest {
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
 
+        usuarioRepository = new UsuarioRepository(manager);
         livroRepository = new LivroRepository(manager);
         emprestimoRepository = new EmprestimoRepository(manager);
     }
@@ -53,10 +57,11 @@ public class EmprestimoRepositoryTest {
 
     @Test
     public void deveSalvarEmprestimo() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro = new Livro("The Mythical Man-Month", "Fred Brooks");
-        Emprestimo emprestimo = new Emprestimo(usuario, livro, LocalDate.now());
+        Usuario usuario = umUsuario().constroi();
+        Livro livro = umLivro().constroi();
+        Emprestimo emprestimo = umEmprestimoDolivro(livro).paraUsuario(usuario).constroi();
 
+        usuarioRepository.salva(usuario);
         livroRepository.salva(livro);
         emprestimoRepository.salva(emprestimo);
 
@@ -68,16 +73,16 @@ public class EmprestimoRepositoryTest {
 
     @Test
     public void deveTrazerListaDeLivrosEmprestados() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro1 = new Livro("The Mythical Man-Month", "Fred Brooks");
-        Livro livro2 = new Livro("Clean Code", "Robert C. Martin");
-        Livro livro3 = new Livro("Code Complete", "Steve McConnell");
-        Livro livroNaoEmprestado = new Livro("Refactoring", "Martin Fowler");
+        Usuario usuario = umUsuario().constroi();
+        Livro livro1 = umLivro().comTitulo("The Mythical Man-Month").constroi();
+        Livro livro2 = umLivro().comTitulo("Clean Code").constroi();
+        Livro livro3 = umLivro().comTitulo("Code Complete").constroi();
+        Livro livroNaoEmprestado = umLivro().constroi();
+        Emprestimo emprestimo1 = umEmprestimoDolivro(livro1).paraUsuario(usuario).constroi();
+        Emprestimo emprestimo2 = umEmprestimoDolivro(livro2).paraUsuario(usuario).constroi();
+        Emprestimo emprestimo3 = umEmprestimoDolivro(livro3).paraUsuario(usuario).aDiasAtras(10).constroi();
 
-        Emprestimo emprestimo1 = new Emprestimo(usuario, livro1, LocalDate.now());
-        Emprestimo emprestimo2 = new Emprestimo(usuario, livro2, LocalDate.now());
-        Emprestimo emprestimo3 = new Emprestimo(usuario, livro3, LocalDate.now().minusDays(10));
-
+        usuarioRepository.salva(usuario);
         livroRepository.salva(livro1);
         livroRepository.salva(livro2);
         livroRepository.salva(livro3);
@@ -99,14 +104,15 @@ public class EmprestimoRepositoryTest {
 
     @Test
     public void deveTrazerListaDeLivrosEmAtrasoNaDevolucao() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro1 = new Livro("The Mythical Man-Month", "Fred Brooks");
-        Livro livro2 = new Livro("Clean Code", "Robert C. Martin");
-        Livro livro3 = new Livro("Code Complete", "Steve McConnell");
-        Emprestimo emprestimo1 = new Emprestimo(usuario, livro1, LocalDate.now().minusMonths(1));
-        Emprestimo emprestimo2 = new Emprestimo(usuario, livro2, LocalDate.now().minusDays(10));
-        Emprestimo emprestimo3 = new Emprestimo(usuario, livro3, LocalDate.now().minusDays(1));
+        Usuario usuario = umUsuario().constroi();
+        Livro livro1 = umLivro().comTitulo("The Mythical Man-Month").constroi();
+        Livro livro2 = umLivro().comTitulo("Clean Code").constroi();
+        Livro livro3 = umLivro().comTitulo("Code Complete").constroi();
+        Emprestimo emprestimo1 = umEmprestimoDolivro(livro1).paraUsuario(usuario).aDiasAtras(20).constroi();
+        Emprestimo emprestimo2 = umEmprestimoDolivro(livro2).paraUsuario(usuario).aDiasAtras(8).constroi();
+        Emprestimo emprestimo3 = umEmprestimoDolivro(livro3).paraUsuario(usuario).aDiasAtras(1).constroi();
 
+        usuarioRepository.salva(usuario);
         livroRepository.salva(livro1);
         livroRepository.salva(livro2);
         livroRepository.salva(livro3);
@@ -117,11 +123,11 @@ public class EmprestimoRepositoryTest {
         manager.flush();
         manager.clear();
 
-        List<Livro> livrosEmprestados = emprestimoRepository.livrosEmAtraso();
+        List<Livro> livrosAtrasados = emprestimoRepository.livrosEmAtraso();
 
-        assertEquals(2, livrosEmprestados.size());
-        assertEquals("The Mythical Man-Month", livrosEmprestados.get(0).getTitulo());
-        assertEquals("Clean Code", livrosEmprestados.get(1).getTitulo());
+        assertEquals(2, livrosAtrasados.size());
+        assertEquals("The Mythical Man-Month", livrosAtrasados.get(0).getTitulo());
+        assertEquals("Clean Code", livrosAtrasados.get(1).getTitulo());
     }
 
 }

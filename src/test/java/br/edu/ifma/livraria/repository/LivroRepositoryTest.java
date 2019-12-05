@@ -1,8 +1,11 @@
 package br.edu.ifma.livraria.repository;
 
+import static br.edu.ifma.livraria.databuilder.EmprestimoBuilder.umEmprestimoDolivro;
+import static br.edu.ifma.livraria.databuilder.LivroBuilder.umLivro;
+import static br.edu.ifma.livraria.databuilder.UsuarioBuilder.umUsuario;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -23,7 +26,9 @@ public class LivroRepositoryTest {
 
     private EntityManager manager;
     private static EntityManagerFactory emf;
+    private UsuarioRepository usuarioRepository;
     private LivroRepository livroRepository;
+    private EmprestimoRepository emprestimoRepository;
 
     @BeforeAll
     public static void beforeAll() {
@@ -35,7 +40,9 @@ public class LivroRepositoryTest {
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
 
+        usuarioRepository = new UsuarioRepository(manager);
         livroRepository = new LivroRepository(manager);
+        emprestimoRepository = new EmprestimoRepository(manager);
     }
 
     @AfterEach
@@ -50,58 +57,58 @@ public class LivroRepositoryTest {
 
     @Test
     public void deveSalvarLivroSemHistoricoDeEmprestimo() {
-        final Livro livro = new Livro("Clean Code: A Handbook of Agile Software Craftsmanship", "Robert C. Martin");
+        Livro livro = umLivro().comTitulo("Clean Code").constroi();
 
-        final Livro livroSalvo = livroRepository.salva(livro);
+        livroRepository.salva(livro);
 
         manager.flush();
         manager.clear();
 
-        List<Emprestimo> historico = livroRepository.historicoDeEmprestimoDo(livroSalvo);
+        List<Emprestimo> historico = livroRepository.historicoDeEmprestimoDo(livro);
 
-        assertEquals("Clean Code: A Handbook of Agile Software Craftsmanship", livroSalvo.getTitulo());
+        assertNotNull(livro.getId());
         assertEquals(0, historico.size());
     }
 
     @Test
     public void deveAtualizarLivro() {
-        final Livro livro = new Livro("Clean Code: A Handbook of Agile Software Craftsmanship", "Robert C. Martin");
+        Livro livro = umLivro().constroi();
 
-        final Livro livroSalvo = livroRepository.salva(livro);
+        livroRepository.salva(livro);
 
-        manager.flush();
-        manager.clear();
+        Livro livroSalvo = livroRepository.porId(livro.getId());
 
         livroSalvo.setTitulo("The Mithycal Man Month");
         livroSalvo.setAutor("Fred Brooks");
 
-        final Livro livroAtualizado = livroRepository.atualiza(livroSalvo);
+        livroSalvo = livroRepository.atualiza(livroSalvo);
 
         manager.flush();
         manager.clear();
 
-        assertEquals("The Mithycal Man Month", livroAtualizado.getTitulo());
-        assertEquals("Fred Brooks", livroAtualizado.getAutor());
+        assertEquals("The Mithycal Man Month", livroSalvo.getTitulo());
+        assertEquals("Fred Brooks", livroSalvo.getAutor());
     }
 
     @Test
     public void deveRecuperarHistoricoDeEmprestimosDoLivro() {
-        Usuario usuario1 = new Usuario("Jon", "A001");
-        Usuario usuario2 = new Usuario("James", "A002");
-        final Livro livro1 = new Livro("The Mythical Man Month", "Fred Brooks");
-        Emprestimo emprestimo1 = new Emprestimo(usuario1, livro1, LocalDate.now());
-        Emprestimo emprestimo2 = new Emprestimo(usuario2, livro1, LocalDate.now());
-        
-        livro1.adicionaEmprestimo(emprestimo1);
-        livro1.adicionaEmprestimo(emprestimo2);
+        Usuario usuario1 = umUsuario().comNome("Jon").comMatricula("A0001").constroi();
+        Usuario usuario2 = umUsuario().comNome("James").comMatricula("A0002").constroi();
+        Livro livro = umLivro().constroi();
+        Emprestimo emprestimo1 = umEmprestimoDolivro(livro).paraUsuario(usuario1).constroi();
+        Emprestimo emprestimo2 = umEmprestimoDolivro(livro).paraUsuario(usuario2).constroi();
 
-        Livro livroSalvo = livroRepository.salva(livro1);
-        
+        usuarioRepository.salva(usuario1);
+        usuarioRepository.salva(usuario2);
+        livroRepository.salva(livro);
+        emprestimoRepository.salva(emprestimo1);
+        emprestimoRepository.salva(emprestimo2);
+
         manager.flush();
         manager.clear();
 
-        List<Emprestimo> historico = livroRepository.historicoDeEmprestimoDo(livroSalvo);
-        
+        List<Emprestimo> historico = livroRepository.historicoDeEmprestimoDo(livro);
+
         assertEquals(2, historico.size());
         assertEquals("Jon", historico.get(0).getUsuario().getNome());
         assertEquals("James", historico.get(1).getUsuario().getNome());

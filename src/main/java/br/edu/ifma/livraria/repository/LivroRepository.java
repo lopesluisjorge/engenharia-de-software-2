@@ -25,11 +25,18 @@ public final class LivroRepository {
         return livroSalvo;
     }
 
+    public Livro porId(Long id) {
+        return manager.createQuery("FROM Livro l WHERE l.id = :id", Livro.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
     public List<Emprestimo> historicoDeEmprestimoDo(Livro livro) {
         return manager
                 .createQuery("FROM Emprestimo e WHERE e.livro = :livro ORDER BY e.id", Emprestimo.class)
                 .setParameter("livro", livro)
                 .getResultList();
     }
+
 
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +20,7 @@ public final class Livro {
     private String titulo;
     private boolean isEmprestado = false;
     private boolean isReservado = false;
-    @OneToMany(mappedBy = "livro", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @OneToMany(mappedBy = "livro")
     private final List<Emprestimo> historico = new ArrayList<>();
 
     protected Livro() {

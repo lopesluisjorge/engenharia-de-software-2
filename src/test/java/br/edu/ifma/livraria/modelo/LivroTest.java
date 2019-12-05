@@ -1,5 +1,7 @@
 package br.edu.ifma.livraria.modelo;
 
+import static br.edu.ifma.livraria.databuilder.LivroBuilder.umLivro;
+import static br.edu.ifma.livraria.databuilder.UsuarioBuilder.umUsuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,7 +17,7 @@ public class LivroTest {
 
     @BeforeEach
     public void beforeEach() {
-        livro = new Livro("Clean Code: A Handbook of Agile Software Craftsmanship", "Robert C. Martin");
+        livro = umLivro().comTitulo("Clean Code").doAutor("Robert Martin").constroi();
     }
 
     @Test
@@ -37,7 +39,7 @@ public class LivroTest {
 
     @Test
     public void deveAdicionarEmprestimoAHistoricoDeEmprestimosVazio() {
-        Usuario usuario = new Usuario("James", "A0001");
+        Usuario usuario = umUsuario().comNome("James").constroi();
 
         Emprestimo emprestimo = new Emprestimo(usuario, livro, LocalDate.now());
         livro.adicionaEmprestimo(emprestimo);

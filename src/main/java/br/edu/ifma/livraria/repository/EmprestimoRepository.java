@@ -9,7 +9,7 @@ import br.edu.ifma.livraria.modelo.Livro;
 
 public class EmprestimoRepository {
 
-    private EntityManager manager;
+    private final EntityManager manager;
 
     public EmprestimoRepository(EntityManager manager) {
         this.manager = manager;

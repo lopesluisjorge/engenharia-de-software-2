@@ -1,5 +1,8 @@
 package br.edu.ifma.livraria.modelo;
 
+import static br.edu.ifma.livraria.databuilder.EmprestimoBuilder.umEmprestimoDolivro;
+import static br.edu.ifma.livraria.databuilder.LivroBuilder.umLivro;
+import static br.edu.ifma.livraria.databuilder.UsuarioBuilder.umUsuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,10 +15,9 @@ public class EmprestimoTest {
 
     @Test
     public void deveTrazerNomeEMatriculaDoUsuarioQuePegouLivroEmprestado() {
-        final Usuario usuario = new Usuario("James", "A0001");
-        final Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        final LocalDate dataEmprestimo = LocalDate.now();
-        Emprestimo emprestimo = new Emprestimo(usuario, livro, dataEmprestimo);
+        Usuario usuario = umUsuario().comNome("James").comMatricula("A0001").constroi();
+        Livro livro = umLivro().constroi();
+        Emprestimo emprestimo = umEmprestimoDolivro(livro).paraUsuario(usuario).constroi();
 
         assertEquals("James", emprestimo.getUsuario().getNome());
         assertEquals("A0001", emprestimo.getUsuario().getMatricula());
@@ -23,20 +25,16 @@ public class EmprestimoTest {
 
     @Test
     public void dataPrevistaParaDevolucaoDeveSerDeSeteDiasAposDataDoEmprestimo() {
-        final Usuario usuario = new Usuario("James", "A0001");
-        final Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        final LocalDate dataEmprestimo = LocalDate.now();
-        Emprestimo emprestimo = new Emprestimo(usuario, livro, dataEmprestimo);
+        Livro livro = umLivro().constroi();
+        Emprestimo emprestimo = umEmprestimoDolivro(livro).constroi();
 
         assertEquals(LocalDate.now().plusDays(7), emprestimo.getDataPrevista());
     }
 
     @Test
     public void naoDeveTerDataDeDevolucaoAnteriorADataDeEmprestimo() {
-        final Usuario usuario = new Usuario("James", "A0001");
-        final Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        final LocalDate dataEmprestimo = LocalDate.now();
-        Emprestimo emprestimo = new Emprestimo(usuario, livro, dataEmprestimo);
+        Livro livro = umLivro().comTitulo("The Mythical Man-Month").constroi();
+        Emprestimo emprestimo = umEmprestimoDolivro(livro).constroi();
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> emprestimo.setDataDevolucao(LocalDate.now().minusDays(1)),
@@ -47,30 +45,27 @@ public class EmprestimoTest {
 
     @Test
     public void deveTerUsuarioNaoNulo() {
-        final Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        final LocalDate dataEmprestimo = LocalDate.now();
+        Livro livro = umLivro().constroi();
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> new Emprestimo(null, livro, dataEmprestimo), "Deveria ter lançado um IllegalArgumentException");
+                () -> umEmprestimoDolivro(livro).paraUsuario(null).constroi(),
+                "Deveria ter lançado um IllegalArgumentException");
 
         assertTrue(ex.getMessage().contains("Usuário Inválido"));
     }
 
     @Test
     public void deveTerLivroNaoNulo() {
-        final Usuario usuario = new Usuario("James", "A0001");
-        final LocalDate dataEmprestimo = LocalDate.now();
-
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> new Emprestimo(usuario, null, dataEmprestimo), "Deveria ter lançado um IllegalArgumentException");
+                () -> umEmprestimoDolivro(null).constroi(), "Deveria ter lançado um IllegalArgumentException");
 
         assertTrue(ex.getMessage().contains("Livro Inválido"));
     }
 
     @Test
     public void deveTerDataDeEmprestimoNaoNula() {
-        final Usuario usuario = new Usuario("James", "A0001");
-        final Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        Usuario usuario = umUsuario().constroi();
+        Livro livro = umLivro().constroi();
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> new Emprestimo(usuario, livro, null), "Deveria ter lançado um IllegalArgumentException");

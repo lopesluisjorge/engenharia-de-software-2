@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,7 @@ public final class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Column(unique = true)
     private String matricula;
     @OneToMany(mappedBy = "usuario")
     private final List<Emprestimo> emprestimos = new ArrayList<>();
@@ -24,7 +26,7 @@ public final class Usuario {
     protected Usuario() {
 
     }
-    
+
     public Usuario(String nome, String matricula) {
         this.nome = nome;
         this.matricula = matricula;
