@@ -33,7 +33,7 @@ public class EmprestimoTest {
 
     @Test
     public void naoDeveTerDataDeDevolucaoAnteriorADataDeEmprestimo() {
-        Livro livro = umLivro().comTitulo("The Mythical Man-Month").constroi();
+        Livro livro = umLivro().constroi();
         Emprestimo emprestimo = umEmprestimoDolivro(livro).constroi();
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,

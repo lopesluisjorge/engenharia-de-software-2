@@ -1,5 +1,7 @@
 package br.edu.ifma.livraria.servico;
 
+import static br.edu.ifma.livraria.databuilder.LivroBuilder.umLivro;
+import static br.edu.ifma.livraria.databuilder.UsuarioBuilder.umUsuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -27,8 +29,8 @@ public class EmprestimoServiceTest {
 
     @Test
     public void deveEmprestarLivroQueNaoEstejaReservado() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        Usuario usuario = umUsuario().comNome("James").constroi();
+        Livro livro = umLivro().comTitulo("Clean Code").constroi();
 
         Emprestimo emprestimoRealizado = emprestimoService.emprestaLivro(usuario, livro);
 
@@ -40,8 +42,8 @@ public class EmprestimoServiceTest {
 
     @Test
     public void naoDeveEmprestarLivroQuePosuiReserva() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        Usuario usuario = umUsuario().constroi();
+        Livro livro = umLivro().constroi();
 
         livro.reservar();
 
@@ -54,8 +56,8 @@ public class EmprestimoServiceTest {
 
     @Test
     public void naoDeveEmprestarLivroQueJaEstejaEmprestado() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        Usuario usuario = umUsuario().constroi();
+        Livro livro = umLivro().constroi();
 
         Emprestimo emprestimoRealizado = emprestimoService.emprestaLivro(usuario, livro);
         EmprestimoNaoRealizadoException ex = assertThrows(EmprestimoNaoRealizadoException.class,
@@ -68,8 +70,8 @@ public class EmprestimoServiceTest {
 
     @Test
     public void deveTerDataPrevistaCorreta() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        Usuario usuario = umUsuario().constroi();
+        Livro livro = umLivro().constroi();
 
         Emprestimo emprestimo = emprestimoService.emprestaLivro(usuario, livro);
 
@@ -78,8 +80,8 @@ public class EmprestimoServiceTest {
 
     @Test
     public void deveTerUsuarioComUmEmprestimo() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro = new Livro("Clean Code", "Robert C. Martin");
+        Usuario usuario = umUsuario().constroi();
+        Livro livro = umLivro().constroi();
 
         emprestimoService.emprestaLivro(usuario, livro);
 
@@ -88,11 +90,11 @@ public class EmprestimoServiceTest {
 
     @Test
     public void deveTerUsuarioComDoisEmprestimos() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        Livro livro2 = new Livro("Domain Driven Design", "Eric Evans");
+        Usuario usuario = umUsuario().constroi();
+        Livro livro1 = umLivro().constroi();
+        Livro livro2 = umLivro().constroi();
 
-        emprestimoService.emprestaLivro(usuario, livro);
+        emprestimoService.emprestaLivro(usuario, livro1);
         emprestimoService.emprestaLivro(usuario, livro2);
 
         assertEquals(2, usuario.getEmprestimos().size());
@@ -100,12 +102,12 @@ public class EmprestimoServiceTest {
 
     @Test
     public void naoDeveTerTresEmprestimosSimultaneosParaUmUsuario() {
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        Livro livro2 = new Livro("Domain Driven Design", "Eric Evans");
-        Livro livro3 = new Livro("The Pragmatic Programmer", "Andrew Hunt & David Thomas");
+        Usuario usuario = umUsuario().constroi();
+        Livro livro1 = umLivro().constroi();
+        Livro livro2 = umLivro().constroi();
+        Livro livro3 = umLivro().constroi();
 
-        emprestimoService.emprestaLivro(usuario, livro);
+        emprestimoService.emprestaLivro(usuario, livro1);
         emprestimoService.emprestaLivro(usuario, livro2);
         EmprestimoNaoRealizadoException ex = assertThrows(EmprestimoNaoRealizadoException.class,
                 () -> emprestimoService.emprestaLivro(usuario, livro3),
@@ -118,17 +120,17 @@ public class EmprestimoServiceTest {
     @Test
     public void usuarioDevePoderTerTerceiroEmprestimoQuandoDevolverAoMenosUmDeDoisLivrosAnteriormenteEmprestados() {
         DevolucaoService devolucaoService = new DevolucaoService();
-        Usuario usuario = new Usuario("James", "A0001");
-        Livro livro = new Livro("Clean Code", "Robert C. Martin");
-        Livro livro2 = new Livro("Domain Driven Design", "Eric Evans");
-        Livro livro3 = new Livro("The Pragmatic Programmer", "Andrew Hunt & David Thomas");
+        Usuario usuario = umUsuario().constroi();
+        Livro livro1 = umLivro().constroi();
+        Livro livro2 = umLivro().constroi();
+        Livro livro3 = umLivro().constroi();
 
-        Emprestimo emprestimo = emprestimoService.emprestaLivro(usuario, livro);
+        Emprestimo emprestimo1 = emprestimoService.emprestaLivro(usuario, livro1);
         Emprestimo emprestimo2 = emprestimoService.emprestaLivro(usuario, livro2);
-        devolucaoService.devolverLivro(emprestimo, LocalDate.now());
+        devolucaoService.devolverLivro(emprestimo1, LocalDate.now());
         Emprestimo emprestimo3 = emprestimoService.emprestaLivro(usuario, livro3);
 
-        assertNotNull(emprestimo.getDataDevolucao());
+        assertNotNull(emprestimo1.getDataDevolucao());
         assertNull(emprestimo2.getDataDevolucao());
         assertNull(emprestimo3.getDataDevolucao());
     }

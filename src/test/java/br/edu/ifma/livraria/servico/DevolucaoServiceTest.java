@@ -1,5 +1,7 @@
 package br.edu.ifma.livraria.servico;
 
+import static br.edu.ifma.livraria.databuilder.LivroBuilder.umLivro;
+import static br.edu.ifma.livraria.databuilder.UsuarioBuilder.umUsuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -22,8 +24,8 @@ public class DevolucaoServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        usuario = new Usuario("James", "A0001");
-        livro = new Livro("Clean Code", "Robert C. Martin");
+        usuario = umUsuario().constroi();
+        livro = umLivro().constroi();
         EmprestimoService emprestimoService = new EmprestimoService();
         emprestimo = emprestimoService.emprestaLivro(usuario, livro);
         devolucaoService = new DevolucaoService();
