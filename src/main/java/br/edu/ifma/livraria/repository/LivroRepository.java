@@ -3,7 +3,6 @@ package br.edu.ifma.livraria.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 import br.edu.ifma.livraria.modelo.Emprestimo;
 import br.edu.ifma.livraria.modelo.Livro;
@@ -27,10 +26,10 @@ public final class LivroRepository {
     }
 
     public List<Emprestimo> historicoDeEmprestimoDo(Livro livro) {
-        TypedQuery<Emprestimo> query = manager
-                .createQuery("SELECT e FROM Emprestimo e WHERE e.livro.id = :livroId", Emprestimo.class);
-        query.setParameter("livroId", livro.getId());
-        return query.getResultList();
+        return manager
+                .createQuery("FROM Emprestimo e WHERE e.livro = :livro ORDER BY e.id", Emprestimo.class)
+                .setParameter("livro", livro)
+                .getResultList();
     }
 
 }

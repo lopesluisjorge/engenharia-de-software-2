@@ -33,7 +33,7 @@ public final class Emprestimo {
     public static final BigDecimal VALOR_FIXO_PAGAMENTO = new BigDecimal("5.0");
     public static final BigDecimal MULTA_POR_DIA_DE_ATRASO_NO_PAGAMENTO = new BigDecimal("0.40");
 
-    public Emprestimo() {
+    protected Emprestimo() {
 
     }
 
@@ -42,6 +42,10 @@ public final class Emprestimo {
         this.setLivro(livro);
         this.setDataEmprestimo(dataEmprestimo);
         dataPrevista = dataEmprestimo.plusDays(DIAS_PARA_DEVOLUCAO);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Usuario getUsuario() {

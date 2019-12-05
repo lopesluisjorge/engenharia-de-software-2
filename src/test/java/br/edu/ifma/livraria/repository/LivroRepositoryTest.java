@@ -86,19 +86,25 @@ public class LivroRepositoryTest {
 
     @Test
     public void deveRecuperarHistoricoDeEmprestimosDoLivro() {
-        final Livro livro = new Livro();
-        livro.setTitulo("The Mithycal Man Month");
-        livro.adicionaEmprestimo(new Emprestimo(new Usuario("Jon", "1"), livro, LocalDate.now()));
+        Usuario usuario1 = new Usuario("Jon", "A001");
+        Usuario usuario2 = new Usuario("James", "A002");
+        final Livro livro1 = new Livro("The Mythical Man Month", "Fred Brooks");
+        Emprestimo emprestimo1 = new Emprestimo(usuario1, livro1, LocalDate.now());
+        Emprestimo emprestimo2 = new Emprestimo(usuario2, livro1, LocalDate.now());
+        
+        livro1.adicionaEmprestimo(emprestimo1);
+        livro1.adicionaEmprestimo(emprestimo2);
 
-        final Livro livroSalvo = livroRepository.salva(livro);
-
+        Livro livroSalvo = livroRepository.salva(livro1);
+        
         manager.flush();
         manager.clear();
 
         List<Emprestimo> historico = livroRepository.historicoDeEmprestimoDo(livroSalvo);
         
-        assertEquals(1, historico.size());
-        assertEquals("The Mithycal Man Month", historico.get(0).getLivro().getTitulo());
+        assertEquals(2, historico.size());
+        assertEquals("Jon", historico.get(0).getUsuario().getNome());
+        assertEquals("James", historico.get(1).getUsuario().getNome());
     }
 
 }

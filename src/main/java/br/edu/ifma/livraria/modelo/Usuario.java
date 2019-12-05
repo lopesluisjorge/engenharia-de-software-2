@@ -21,7 +21,7 @@ public final class Usuario {
     @OneToMany(mappedBy = "usuario")
     private final List<Emprestimo> emprestimos = new ArrayList<>();
 
-    public Usuario() {
+    protected Usuario() {
 
     }
     

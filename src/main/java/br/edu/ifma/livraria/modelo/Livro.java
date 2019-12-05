@@ -24,7 +24,7 @@ public final class Livro {
     @OneToMany(mappedBy = "livro", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     private final List<Emprestimo> historico = new ArrayList<>();
 
-    public Livro() {
+    protected Livro() {
 
     }
 
