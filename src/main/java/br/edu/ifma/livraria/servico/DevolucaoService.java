@@ -25,7 +25,7 @@ public class DevolucaoService {
             valorMulta = _60PerCentoDoValorFixo;
         }
 
-        emprestimo.setValorPago(valorFixo.add(valorMulta).setScale(2));
+        emprestimo.setValorTotal(valorFixo.add(valorMulta).setScale(2));
     }
 
 }

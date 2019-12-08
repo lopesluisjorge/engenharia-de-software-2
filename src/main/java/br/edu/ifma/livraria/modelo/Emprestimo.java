@@ -2,7 +2,10 @@ package br.edu.ifma.livraria.modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public final class Emprestimo {
@@ -26,7 +31,9 @@ public final class Emprestimo {
     private LocalDate dataEmprestimo;
     private LocalDate dataPrevista;
     private LocalDate dataDevolucao;
-    private BigDecimal valorPago;
+    private BigDecimal valorTotal;
+    @OneToMany(mappedBy = "emprestimo")
+    private Set<Pagamento> pagamentos = new LinkedHashSet<>();
 
     public static final int DIAS_PARA_DEVOLUCAO = 7;
     public static final BigDecimal VALOR_FIXO_PAGAMENTO = new BigDecimal("5.0");
@@ -99,12 +106,28 @@ public final class Emprestimo {
         this.dataDevolucao = dataDevolucao;
     }
 
-    public BigDecimal getValorPago() {
-        return valorPago;
+    public BigDecimal getValorTotal() {
+        return valorTotal;
     }
 
-    public void setValorPago(BigDecimal valorPago) {
-        this.valorPago = valorPago;
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public void adicionaPagamento(Pagamento pagamento) {
+        pagamentos.add(pagamento);
+    }
+
+    public Set<Pagamento> getPagamentos() {
+        return Collections.unmodifiableSet(pagamentos);
+    }
+
+    @Transient
+    public BigDecimal getValorPago() {
+        return pagamentos.stream()
+                .map(Pagamento::getValor)
+                .reduce((identity, accumulator) -> identity.add(accumulator))
+                .get();
     }
 
     @Override

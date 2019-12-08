@@ -37,7 +37,7 @@ public class DevolucaoServiceTest {
 
         assertFalse(livro.isEmprestado());
         assertEquals(LocalDate.now().plusDays(2), emprestimo.getDataDevolucao());
-        assertEquals(new BigDecimal("5.00"), emprestimo.getValorPago());
+        assertEquals(new BigDecimal("5.00"), emprestimo.getValorTotal());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class DevolucaoServiceTest {
 
         assertFalse(livro.isEmprestado());
         assertEquals(LocalDate.now().plusDays(7), emprestimo.getDataDevolucao());
-        assertEquals(new BigDecimal("5.00"), emprestimo.getValorPago());
+        assertEquals(new BigDecimal("5.00"), emprestimo.getValorTotal());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class DevolucaoServiceTest {
 
         assertFalse(livro.isEmprestado());
         assertEquals(LocalDate.now().plusDays(8), emprestimo.getDataDevolucao());
-        assertEquals(new BigDecimal("5.40"), emprestimo.getValorPago());
+        assertEquals(new BigDecimal("5.40"), emprestimo.getValorTotal());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class DevolucaoServiceTest {
 
         assertFalse(livro.isEmprestado());
         assertEquals(LocalDate.now().plusDays(30), emprestimo.getDataDevolucao());
-        assertEquals(new BigDecimal("8.00"), emprestimo.getValorPago());
+        assertEquals(new BigDecimal("8.00"), emprestimo.getValorTotal());
     }
 
 }
