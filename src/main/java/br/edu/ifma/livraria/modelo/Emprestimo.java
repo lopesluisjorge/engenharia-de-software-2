@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -23,10 +22,8 @@ public final class Emprestimo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(columnDefinition = "usuario_id")
     private Usuario usuario;
     @ManyToOne
-    @JoinColumn(columnDefinition = "livro_id")
     private Livro livro;
     private LocalDate dataEmprestimo;
     private LocalDate dataPrevista;
@@ -37,7 +34,7 @@ public final class Emprestimo {
 
     public static final int DIAS_PARA_DEVOLUCAO = 7;
     public static final BigDecimal VALOR_FIXO_PAGAMENTO = new BigDecimal("5.0");
-    public static final BigDecimal MULTA_POR_DIA_DE_ATRASO_NO_PAGAMENTO = new BigDecimal("0.40");
+    public static final BigDecimal MULTA_POR_DIA_DE_ATRASO = new BigDecimal("0.40");
 
     protected Emprestimo() {
 

@@ -4,6 +4,7 @@ import static br.edu.ifma.livraria.databuilder.LivroBuilder.umLivro;
 import static br.edu.ifma.livraria.databuilder.UsuarioBuilder.umUsuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.mock;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,21 +15,26 @@ import org.junit.jupiter.api.Test;
 import br.edu.ifma.livraria.modelo.Emprestimo;
 import br.edu.ifma.livraria.modelo.Livro;
 import br.edu.ifma.livraria.modelo.Usuario;
+import br.edu.ifma.livraria.repository.EmprestimoRepository;
 
 public class DevolucaoServiceTest {
 
+    private DevolucaoService devolucaoService;
     private Usuario usuario;
     private Livro livro;
-    private DevolucaoService devolucaoService;
     private Emprestimo emprestimo;
 
     @BeforeEach
     public void beforeEach() {
+
         usuario = umUsuario().constroi();
         livro = umLivro().constroi();
-        EmprestimoService emprestimoService = new EmprestimoService();
+
+        var emprestimos = mock(EmprestimoRepository.class);
+        var emprestimoService = new EmprestimoService(emprestimos);
         emprestimo = emprestimoService.emprestaLivro(usuario, livro);
-        devolucaoService = new DevolucaoService();
+        devolucaoService = new DevolucaoService(emprestimos);
+
     }
 
     @Test

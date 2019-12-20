@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import java.time.LocalDate;
 
@@ -17,6 +18,7 @@ import br.edu.ifma.livraria.exception.EmprestimoNaoRealizadoException;
 import br.edu.ifma.livraria.modelo.Emprestimo;
 import br.edu.ifma.livraria.modelo.Livro;
 import br.edu.ifma.livraria.modelo.Usuario;
+import br.edu.ifma.livraria.repository.EmprestimoRepository;
 
 public class EmprestimoServiceTest {
 
@@ -24,7 +26,8 @@ public class EmprestimoServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        emprestimoService = new EmprestimoService();
+        var emprestimos = mock(EmprestimoRepository.class);
+        emprestimoService = new EmprestimoService(emprestimos);
     }
 
     @Test
@@ -119,7 +122,6 @@ public class EmprestimoServiceTest {
 
     @Test
     public void usuarioDevePoderTerTerceiroEmprestimoQuandoDevolverAoMenosUmDeDoisLivrosAnteriormenteEmprestados() {
-        DevolucaoService devolucaoService = new DevolucaoService();
         Usuario usuario = umUsuario().constroi();
         Livro livro1 = umLivro().constroi();
         Livro livro2 = umLivro().constroi();
@@ -127,7 +129,7 @@ public class EmprestimoServiceTest {
 
         Emprestimo emprestimo1 = emprestimoService.emprestaLivro(usuario, livro1);
         Emprestimo emprestimo2 = emprestimoService.emprestaLivro(usuario, livro2);
-        devolucaoService.devolverLivro(emprestimo1, LocalDate.now());
+        emprestimo1.setDataDevolucao(LocalDate.now());
         Emprestimo emprestimo3 = emprestimoService.emprestaLivro(usuario, livro3);
 
         assertNotNull(emprestimo1.getDataDevolucao());

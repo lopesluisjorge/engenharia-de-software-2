@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 
 import br.edu.ifma.livraria.modelo.Emprestimo;
 import br.edu.ifma.livraria.modelo.Livro;
+import br.edu.ifma.livraria.modelo.Usuario;
 
 public class EmprestimoRepository {
 
@@ -21,15 +22,27 @@ public class EmprestimoRepository {
     }
 
     public List<Livro> livrosEmprestados() {
-        return manager
-                .createQuery("SELECT l FROM Livro l, Emprestimo e WHERE e.livro = l ORDER BY l.id", Livro.class)
-                .getResultList();
+        var jpql = "SELECT l FROM Livro l, Emprestimo e WHERE e.livro = l ORDER BY l.id";
+
+        return manager.createQuery(jpql, Livro.class).getResultList();
     }
 
     public List<Livro> livrosEmAtraso() {
-        return manager
-                .createQuery("SELECT l FROM Livro l, Emprestimo e WHERE e.livro = l AND e.dataPrevista < now() AND e.dataDevolucao is null", Livro.class)
-                .getResultList();
+        var jpql = "SELECT l FROM Livro l, Emprestimo e WHERE e.livro = l AND e.dataPrevista < NOW() AND e.dataDevolucao IS NULL";
+
+        return manager.createQuery(jpql, Livro.class).getResultList();
+    }
+
+    public List<Emprestimo> emprestimosEmAtraso() {
+        var jpql = "FROM Emprestimo e WHERE e.dataDevolucao IS NULL AND e.dataPrevista < NOW()";
+
+        return manager.createQuery(jpql, Emprestimo.class).getResultList();
+    }
+
+    public List<Emprestimo> devolvidosEmAtraso(Usuario usuario) {
+        var jpql = "FROM Emprestimo e FETCH JOIN e.usuario WHERE e.usuario = :usuario AND e.dataDevolucao > e.dataPrevista";
+
+        return manager.createQuery(jpql, Emprestimo.class).getResultList();
     }
 
 }

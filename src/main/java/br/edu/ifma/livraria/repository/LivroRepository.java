@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import br.edu.ifma.livraria.modelo.Emprestimo;
 import br.edu.ifma.livraria.modelo.Livro;
 
-public final class LivroRepository {
+public class LivroRepository {
 
     private final EntityManager manager;
 
@@ -26,17 +26,15 @@ public final class LivroRepository {
     }
 
     public Livro porId(Long id) {
-        return manager.createQuery("FROM Livro l WHERE l.id = :id", Livro.class)
-                .setParameter("id", id)
-                .getSingleResult();
+        var jpql = "FROM Livro l WHERE l.id = :id";
+
+        return manager.createQuery(jpql, Livro.class).setParameter("id", id).getSingleResult();
     }
 
     public List<Emprestimo> historicoDeEmprestimoDo(Livro livro) {
-        return manager
-                .createQuery("FROM Emprestimo e WHERE e.livro = :livro ORDER BY e.id", Emprestimo.class)
-                .setParameter("livro", livro)
-                .getResultList();
-    }
+        var jpql = "FROM Emprestimo e WHERE e.livro = :livro ORDER BY e.id";
 
+        return manager.createQuery(jpql, Emprestimo.class).setParameter("livro", livro).getResultList();
+    }
 
 }
