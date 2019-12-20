@@ -20,6 +20,7 @@ public final class Usuario {
     private String nome;
     @Column(unique = true)
     private String matricula;
+    private String email;
     @OneToMany(mappedBy = "usuario")
     private final List<Emprestimo> emprestimos = new ArrayList<>();
 
@@ -27,9 +28,15 @@ public final class Usuario {
 
     }
 
+    @Deprecated
     public Usuario(String nome, String matricula) {
         this.nome = nome;
         this.matricula = matricula;
+    }
+    
+    public Usuario(String nome, String matricula, String email) {
+        this(nome, matricula);
+        this.email = email;
     }
 
     public String getNome() {
@@ -38,6 +45,10 @@ public final class Usuario {
 
     public String getMatricula() {
         return matricula;
+    }
+    
+    public String getEmail() {
+        return email;
     }
 
     public List<Emprestimo> getEmprestimos() {
