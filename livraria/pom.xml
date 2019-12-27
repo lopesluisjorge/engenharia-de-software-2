@@ -6,15 +6,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>br.edu.ifma</groupId>
-  <artifactId>testes-com-junit-solid-tdd</artifactId>
+  <artifactId>livraria</artifactId>
   <version>1.0-SNAPSHOT</version>
-
-  <name>testes-com-junit-solid-tdd</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <name>livraria</name>
 
   <properties>
     <java.version>11</java.version>
+    <jdk.version>11</jdk.version>
   </properties>
 
   <dependencies>
@@ -38,7 +36,6 @@
       <artifactId>postgresql</artifactId>
       <version>42.2.8</version>
     </dependency>
-
 
     <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
     <dependency>

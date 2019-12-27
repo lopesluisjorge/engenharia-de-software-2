@@ -1,10 +1,7 @@
 package br.edu.ifma.livraria.servico;
 
-import java.util.List;
-
 import org.apache.logging.log4j.Logger;
 
-import br.edu.ifma.livraria.modelo.Emprestimo;
 import br.edu.ifma.livraria.modelo.Usuario;
 import br.edu.ifma.livraria.repository.EmprestimoRepository;
 

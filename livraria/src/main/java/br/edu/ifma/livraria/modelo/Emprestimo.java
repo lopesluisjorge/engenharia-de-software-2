@@ -30,7 +30,7 @@ public final class Emprestimo {
     private LocalDate dataDevolucao;
     private BigDecimal valorTotal;
     @OneToMany(mappedBy = "emprestimo")
-    private Set<Pagamento> pagamentos = new LinkedHashSet<>();
+    private final Set<Pagamento> pagamentos = new LinkedHashSet<>();
 
     public static final int DIAS_PARA_DEVOLUCAO = 7;
     public static final BigDecimal VALOR_FIXO_PAGAMENTO = new BigDecimal("5.0");

@@ -62,7 +62,7 @@ class CobrancaServiceTest {
         var usuarios = Arrays.asList(usuario1, usuario2).stream().collect(Collectors.toSet());
 
         when(emprestimos.usuariosComEmprestimosEmAtraso()).thenReturn(usuarios);
-        
+
         RuntimeException excessaoLancada = new RuntimeException("Email Rejeitado");
         when(enviadorDeEmail.notificar(usuario1, TipoNotificacao.ATRASO)).thenThrow(excessaoLancada);
 
