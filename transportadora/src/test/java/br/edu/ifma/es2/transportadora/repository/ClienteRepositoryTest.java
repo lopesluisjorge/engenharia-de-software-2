@@ -52,7 +52,7 @@ class ClienteRepositoryTest {
     public void deveBuscarPorTelefone() {
         clienteRepo.save(cliente);
 
-        var buscado = clienteRepo.findByTelefone("98988778787");
+        var buscado = clienteRepo.buscaPor("98988778787");
 
         assertEquals(1l, buscado.size());
         assertEquals("João", buscado.get(0).getNome());
@@ -60,7 +60,7 @@ class ClienteRepositoryTest {
 
     @Test
     public void naoDeveEncontrarPorTelefoneNaoCadastrado() {
-        var buscado = clienteRepo.findByTelefone("98988778787");
+        var buscado = clienteRepo.buscaPor("98988778787");
         assertEquals(0l, buscado.size());
     }
 
