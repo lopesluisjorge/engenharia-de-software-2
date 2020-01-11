@@ -33,9 +33,13 @@ public class CidadeBuilder {
         cidade.setTaxa(taxa);
         return this;
     }
+    public CidadeBuilder comTaxa(Double taxa) {
+        return comTaxa(new BigDecimal(taxa.toString()));
+    }
 
     public CidadeEntrega constroi() {
         return cidade;
     }
+
 
 }

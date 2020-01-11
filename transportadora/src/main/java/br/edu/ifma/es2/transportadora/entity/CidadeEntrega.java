@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Entity
 public class CidadeEntrega {
@@ -20,6 +21,7 @@ public class CidadeEntrega {
     @NotBlank(message = "uf deve ser preenchida")
     private String uf;
     @NotNull(message = "taxa deve ser preenchida")
+    @Positive(message = "taxa não pode ser igual a zero.")
     private BigDecimal taxa;
 
     public Long getId() {

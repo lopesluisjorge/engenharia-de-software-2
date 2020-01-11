@@ -16,6 +16,7 @@ public class FreteBuilder {
         frete.setCliente(ClienteBuilder.umCliente().constroi());
         frete.setDescricao("Um Frete");
         frete.setPeso(100.0d);
+        frete.setValor(new BigDecimal(100));
     }
 
     public static FreteBuilder umFrete() {
@@ -38,8 +39,14 @@ public class FreteBuilder {
         return this;
     }
 
+    public FreteBuilder comPeso(double peso) {
+        frete.setPeso(peso);
+        return this;
+    }
+
     public Frete constroi() {
         return frete;
     }
+
 
 }

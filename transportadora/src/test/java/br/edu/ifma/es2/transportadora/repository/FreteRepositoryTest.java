@@ -13,7 +13,6 @@ import java.util.Arrays;
 
 import javax.validation.ConstraintViolationException;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +42,6 @@ class FreteRepositoryTest {
         frete = umFrete().paraOCliente(cliente).comDestino(cidade).comValor(400.0d).constroi();
         clienteRepo.save(cliente);
         cidadeRepo.save(cidade);
-    }
-    
-    @AfterEach
-    public void tearDown() {
-        clienteRepo.deleteAll();
     }
 
     @Test
@@ -120,9 +114,9 @@ class FreteRepositoryTest {
         var fretesDoCliente = freteRepo.doCliente(cliente);
 
         assertEquals(3l, fretesDoCliente.size());
-        assertThat(fretesDoCliente.get(0), is(frete2));
+        assertThat(fretesDoCliente.get(0), is(frete3));
         assertThat(fretesDoCliente.get(1), is(frete));
-        assertThat(fretesDoCliente.get(2), is(frete3));
+        assertThat(fretesDoCliente.get(2), is(frete2));
     }
 
 }

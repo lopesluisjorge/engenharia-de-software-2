@@ -18,4 +18,8 @@ public class ClienteService {
         return clientes.save(cliente);
     }
 
+    public Cliente buscarPorId(Long id) {
+        return clientes.findById(id).get();
+    }
+
 }
