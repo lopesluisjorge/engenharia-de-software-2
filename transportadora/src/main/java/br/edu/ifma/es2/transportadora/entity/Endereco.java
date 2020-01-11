@@ -1,6 +1,7 @@
 package br.edu.ifma.es2.transportadora.entity;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 @Embeddable
 public class Endereco {
@@ -9,7 +10,9 @@ public class Endereco {
     private String logradouroEndereco;
     private String numeroEndereco;
     private String bairroEndereco;
+    @NotBlank(message = "cidadeEndereco deve ser preenchida.")
     private String cidadeEndereco;
+    @NotBlank(message = "ufEndereco deve ser preenchida.")
     private String ufEndereco;
 
     public TipoLogradouro getTipoLogradouroEndereco() {

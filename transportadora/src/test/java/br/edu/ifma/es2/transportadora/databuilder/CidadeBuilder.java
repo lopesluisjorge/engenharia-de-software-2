@@ -10,6 +10,9 @@ public class CidadeBuilder {
 
     private CidadeBuilder() {
         cidade = new CidadeEntrega();
+        cidade.setNome("São Luís");
+        cidade.setUf("MA");
+        cidade.setTaxa(new BigDecimal("10.00"));
     }
 
     public static CidadeBuilder umaCidade() {

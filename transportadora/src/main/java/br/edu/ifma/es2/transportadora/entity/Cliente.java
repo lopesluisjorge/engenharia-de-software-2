@@ -14,20 +14,16 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
+    @NotBlank(message = "nome deve ser preenchido.")
     private String nome;
-    @NotNull
+    @NotNull(message = "endereco deve ser preenchido.")
     private Endereco endereco;
-    @NotNull
-    @Pattern(regexp = "(\\d{2})9?(\\d{8})")
+    @NotNull(message = "telefone deve ser preenchido.")
+    @Pattern(message = "telefone deve ter o formato {regexp}.", regexp = "(\\d{2})9?(\\d{8})")
     private String telefone;
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNome() {
@@ -53,7 +49,5 @@ public class Cliente {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    
-    
 
 }

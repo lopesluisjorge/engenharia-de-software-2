@@ -15,11 +15,11 @@ public class CidadeEntrega {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
+    @NotBlank(message = "nome deve ser preenchido")
     private String nome;
-    @NotBlank
+    @NotBlank(message = "uf deve ser preenchida")
     private String uf;
-    @NotNull
+    @NotNull(message = "taxa deve ser preenchida")
     private BigDecimal taxa;
 
     public Long getId() {
