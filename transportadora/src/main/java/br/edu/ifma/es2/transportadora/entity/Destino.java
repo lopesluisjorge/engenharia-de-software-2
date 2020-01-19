@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Entity
-public class CidadeEntrega {
+public class Destino {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,13 +68,18 @@ public class CidadeEntrega {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CidadeEntrega other = (CidadeEntrega) obj;
+        Destino other = (Destino) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Destino [id=" + id + ", nome=" + nome + ", uf=" + uf + ", taxa=" + taxa + "]";
     }
 
 }

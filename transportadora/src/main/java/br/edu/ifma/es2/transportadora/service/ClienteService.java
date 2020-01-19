@@ -13,13 +13,14 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clientes;
 
+    @Transactional(readOnly = true)
+    public Cliente buscarPorId(Long id) {
+        return clientes.findById(id).get();
+    }
+
     @Transactional
     public Cliente salva(Cliente cliente) {
         return clientes.save(cliente);
-    }
-
-    public Cliente buscarPorId(Long id) {
-        return clientes.findById(id).get();
     }
 
 }

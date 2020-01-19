@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import br.edu.ifma.es2.transportadora.entity.CidadeEntrega;
+import br.edu.ifma.es2.transportadora.entity.Destino;
 import br.edu.ifma.es2.transportadora.entity.Cliente;
 import br.edu.ifma.es2.transportadora.entity.Frete;
 
@@ -38,15 +38,15 @@ public class FreteRepositoryImpl implements FreteRepositoryQuery {
     }
 
     @Override
-    public CidadeEntrega cidadeComMaisFretes() {
-        var jpql = "SELECT COUNT(f), f.cidadeEntrega FROM Frete f GROUP BY f.cidadeEntrega ORDER BY COUNT(f) DESC";
+    public Destino cidadeComMaisFretes() {
+        var jpql = "SELECT COUNT(f), f.destino FROM Frete f GROUP BY f.destino ORDER BY COUNT(f) DESC";
 
         var query = em.createQuery(jpql, Object[].class);
         query.setMaxResults(1);
 
         var resultado = query.getResultList();
 
-        return (CidadeEntrega) resultado.get(0)[1];
+        return (Destino) resultado.get(0)[1];
     }
 
 }

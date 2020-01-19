@@ -1,6 +1,6 @@
 package br.edu.ifma.es2.transportadora.service;
 
-import static br.edu.ifma.es2.transportadora.databuilder.CidadeBuilder.umaCidade;
+import static br.edu.ifma.es2.transportadora.databuilder.DestinoBuilder.umaCidade;
 import static br.edu.ifma.es2.transportadora.databuilder.ClienteBuilder.umCliente;
 import static br.edu.ifma.es2.transportadora.databuilder.FreteBuilder.umFrete;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -18,10 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
-import br.edu.ifma.es2.transportadora.entity.CidadeEntrega;
+import br.edu.ifma.es2.transportadora.entity.Destino;
 import br.edu.ifma.es2.transportadora.entity.Cliente;
 import br.edu.ifma.es2.transportadora.entity.Frete;
-import br.edu.ifma.es2.transportadora.repository.CidadeEntregaRepository;
+import br.edu.ifma.es2.transportadora.repository.DestinoRepository;
 import br.edu.ifma.es2.transportadora.repository.ClienteRepository;
 
 @SpringBootTest
@@ -30,17 +30,19 @@ class FreteServiceTest {
     @Autowired
     private ClienteRepository clienteRepo;
     @Autowired
-    private CidadeEntregaRepository cidadeRepo;
+    private DestinoRepository cidadeRepo;
     @Autowired
     private FreteService freteService;
     private Cliente cliente;
-    private CidadeEntrega destino;
+    private Destino destino;
     private Frete frete;
 
     @BeforeEach
     private void setup() {
         cliente = umCliente().constroi();
         destino = umaCidade().constroi();
+        System.err.println(cliente);
+        System.err.println(destino);
         frete = umFrete().paraOCliente(cliente).comDestino(destino).comValor(400.0d).constroi();
     }
 

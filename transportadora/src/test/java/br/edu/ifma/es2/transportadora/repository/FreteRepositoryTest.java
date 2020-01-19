@@ -1,6 +1,6 @@
 package br.edu.ifma.es2.transportadora.repository;
 
-import static br.edu.ifma.es2.transportadora.databuilder.CidadeBuilder.umaCidade;
+import static br.edu.ifma.es2.transportadora.databuilder.DestinoBuilder.umaCidade;
 import static br.edu.ifma.es2.transportadora.databuilder.ClienteBuilder.umCliente;
 import static br.edu.ifma.es2.transportadora.databuilder.FreteBuilder.umFrete;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import br.edu.ifma.es2.transportadora.entity.CidadeEntrega;
+import br.edu.ifma.es2.transportadora.entity.Destino;
 import br.edu.ifma.es2.transportadora.entity.Cliente;
 import br.edu.ifma.es2.transportadora.entity.Frete;
 
@@ -28,11 +28,11 @@ class FreteRepositoryTest {
     @Autowired
     private ClienteRepository clienteRepo;
     @Autowired
-    private CidadeEntregaRepository cidadeRepo;
+    private DestinoRepository cidadeRepo;
     @Autowired
     private FreteRepository freteRepo;
     private Cliente cliente;
-    private CidadeEntrega cidade;
+    private Destino cidade;
     private Frete frete;
 
     @BeforeEach
@@ -55,11 +55,11 @@ class FreteRepositoryTest {
 
     @Test
     public void naoDeveSalvarFreteSemDestino() {
-        frete.setCidadeEntrega(null);
+        frete.setDestino(null);
 
         ConstraintViolationException ex = assertThrows(ConstraintViolationException.class, () -> freteRepo.save(frete),
                 "Deveria Lançar ConstraintViolationException.");
-        assertThat(ex.getMessage(), containsString("cidadeEntrega deve ser preenchida"));
+        assertThat(ex.getMessage(), containsString("destino deve ser preenchido"));
     }
 
     @Test
@@ -99,7 +99,7 @@ class FreteRepositoryTest {
         ConstraintViolationException ex = assertThrows(ConstraintViolationException.class, () -> freteRepo.save(frete),
                 "Deveria Lançar ConstraintViolationException.");
 
-        assertThat(ex.getMessage(), containsString("peso não pode ser igual a zero"));
+        assertThat(ex.getMessage(), containsString("peso deve ser maior que zero"));
     }
 
     @Test

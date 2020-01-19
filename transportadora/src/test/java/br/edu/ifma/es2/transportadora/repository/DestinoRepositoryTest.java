@@ -1,6 +1,6 @@
 package br.edu.ifma.es2.transportadora.repository;
 
-import static br.edu.ifma.es2.transportadora.databuilder.CidadeBuilder.umaCidade;
+import static br.edu.ifma.es2.transportadora.databuilder.DestinoBuilder.umaCidade;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,14 +13,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import br.edu.ifma.es2.transportadora.entity.CidadeEntrega;
+import br.edu.ifma.es2.transportadora.entity.Destino;
 
 @DataJpaTest
-class CidadeEntregaRepositoryTest {
+class DestinoRepositoryTest {
 
-    private CidadeEntrega cidade;
+    private Destino cidade;
     @Autowired
-    private CidadeEntregaRepository cidadeRepo;
+    private DestinoRepository cidadeRepo;
 
     @BeforeEach
     public void setup() {

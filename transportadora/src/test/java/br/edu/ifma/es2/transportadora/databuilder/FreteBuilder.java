@@ -2,7 +2,7 @@ package br.edu.ifma.es2.transportadora.databuilder;
 
 import java.math.BigDecimal;
 
-import br.edu.ifma.es2.transportadora.entity.CidadeEntrega;
+import br.edu.ifma.es2.transportadora.entity.Destino;
 import br.edu.ifma.es2.transportadora.entity.Cliente;
 import br.edu.ifma.es2.transportadora.entity.Frete;
 
@@ -12,7 +12,7 @@ public class FreteBuilder {
 
     public FreteBuilder() {
         frete = new Frete();
-        frete.setCidadeEntrega(CidadeBuilder.umaCidade().constroi());
+        frete.setDestino(DestinoBuilder.umaCidade().constroi());
         frete.setCliente(ClienteBuilder.umCliente().constroi());
         frete.setDescricao("Um Frete");
         frete.setPeso(100.0d);
@@ -34,8 +34,8 @@ public class FreteBuilder {
         return this;
     }
 
-    public FreteBuilder comDestino(CidadeEntrega cidade) {
-        frete.setCidadeEntrega(cidade);
+    public FreteBuilder comDestino(Destino cidade) {
+        frete.setDestino(cidade);
         return this;
     }
 

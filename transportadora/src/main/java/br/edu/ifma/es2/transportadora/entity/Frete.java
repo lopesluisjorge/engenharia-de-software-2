@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Frete {
@@ -21,20 +20,35 @@ public class Frete {
     @NotBlank(message = "descrição deve ser preenchida.")
     private String descricao;
     @NotNull(message = "peso deve ser preenchido.")
-    @Positive(message = "peso não pode ser igual a zero.")
+    @Positive(message = "peso deve ser maior que zero.")
     private Double peso;
     @NotNull(message = "valor deve ser preenchido.")
-    @PositiveOrZero(message = "valor deve ser maior ou igual a zero.")
+    @Positive(message = "valor deve ser maior que zero.")
     private BigDecimal valor;
     @NotNull(message = "cliente deve ser preenchido.")
     @ManyToOne
     private Cliente cliente;
-    @NotNull(message = "cidadeEntrega deve ser preenchida.")
+    @NotNull(message = "destino deve ser preenchido.")
     @ManyToOne
-    private CidadeEntrega cidadeEntrega;
+    private Destino destino;
+
+    public Frete() {
+
+    }
+
+    public Frete(String descricao, Double peso, Cliente cliente, Destino cidadeEntrega) {
+        this.descricao = descricao;
+        this.peso = peso;
+        this.cliente = cliente;
+        this.destino = cidadeEntrega;
+    }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescricao() {
@@ -69,12 +83,12 @@ public class Frete {
         this.cliente = cliente;
     }
 
-    public CidadeEntrega getCidadeEntrega() {
-        return cidadeEntrega;
+    public Destino getDestino() {
+        return destino;
     }
 
-    public void setCidadeEntrega(CidadeEntrega cidadeEntrega) {
-        this.cidadeEntrega = cidadeEntrega;
+    public void setDestino(Destino destino) {
+        this.destino = destino;
     }
 
     @Override
