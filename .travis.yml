@@ -3,4 +3,8 @@ jdk:
   - openjdk11
 
 script:
+  - mvn cobertura:cobertura
   - ./mvnw clean install
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
