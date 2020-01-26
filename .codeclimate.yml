@@ -5,5 +5,3 @@ plugins:
         sonar.java.source: "11"
         tests_patterns:
           - src/test/**
-          - livraria/src/test/**
-          - transportadora/src/test/**
