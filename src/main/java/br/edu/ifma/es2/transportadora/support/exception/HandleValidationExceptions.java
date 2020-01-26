@@ -1,4 +1,4 @@
-package br.edu.ifma.es2.transportadora.support;
+package br.edu.ifma.es2.transportadora.support.exception;
 
 import java.util.List;
 import java.util.stream.Collectors;

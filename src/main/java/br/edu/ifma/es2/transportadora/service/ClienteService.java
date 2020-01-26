@@ -13,7 +13,6 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clientes;
 
-    @Transactional(readOnly = true)
     public Cliente buscarPorId(Long id) {
         return clientes.findById(id).get();
     }
@@ -21,6 +20,20 @@ public class ClienteService {
     @Transactional
     public Cliente salva(Cliente cliente) {
         return clientes.save(cliente);
+    }
+
+    @Transactional
+    public Cliente atualiza(Long id, Cliente cliente) {
+        var busca = clientes.findById(id);
+        if (busca.isPresent()) {
+            var clienteSalvo = busca.get();
+            clienteSalvo.setNome(cliente.getNome());
+            clienteSalvo.setEndereco(cliente.getEndereco());
+            clienteSalvo.setTelefone(cliente.getTelefone());
+            return clienteSalvo;
+        }
+
+        throw new RuntimeException("Cliente não encontrado.");
     }
 
 }
