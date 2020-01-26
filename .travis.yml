@@ -3,5 +3,4 @@ jdk:
   - openjdk11
 
 script:
-  - mvn cobertura:cobertura
   - ./mvnw clean install
