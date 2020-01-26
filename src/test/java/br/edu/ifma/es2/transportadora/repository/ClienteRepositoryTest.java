@@ -45,7 +45,7 @@ class ClienteRepositoryTest {
         assertNotNull(salvos.get(0).getId());
         assertThat("João", is(salvos.get(0).getNome()));
         assertThat("98988778787", is(salvos.get(0).getTelefone()));
-        assertThat(umEndereco().constroi(), is(salvos.get(0).getEndereco()));
+        assertThat(umEndereco().constroi().toString(), is(salvos.get(0).getEndereco().toString()));
     }
 
     @Test

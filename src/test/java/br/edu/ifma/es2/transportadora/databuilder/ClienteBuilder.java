@@ -2,6 +2,7 @@ package br.edu.ifma.es2.transportadora.databuilder;
 
 import static br.edu.ifma.es2.transportadora.databuilder.EnderecoBuilder.umEndereco;
 
+import br.edu.ifma.es2.transportadora.controller.form.ClienteForm;
 import br.edu.ifma.es2.transportadora.entity.Cliente;
 import br.edu.ifma.es2.transportadora.entity.Endereco;
 
@@ -40,6 +41,14 @@ public class ClienteBuilder {
 
     public Cliente constroi() {
         return cliente;
+    }
+
+    public ClienteForm constroiForm() {
+        var form = new ClienteForm();
+        form.setNome(cliente.getNome());
+        form.setEndereco(cliente.getEndereco());
+        form.setTelefone(cliente.getTelefone());
+        return form;
     }
 
 }

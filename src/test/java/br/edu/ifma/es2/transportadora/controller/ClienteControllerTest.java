@@ -17,24 +17,25 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
-import br.edu.ifma.es2.transportadora.entity.Cliente;
+import br.edu.ifma.es2.transportadora.controller.dto.ClienteDto;
+import br.edu.ifma.es2.transportadora.controller.form.ClienteForm;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class ClienteControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-    private Cliente cliente;
+    private ClienteForm cliente;
 
     @BeforeEach
     public void setup() {
-        cliente = umCliente().constroi();
+        cliente = umCliente().constroiForm();
     }
 
     @Test
     public void naoDeveCadastratClienteSemNome() {
         cliente.setNome(null);
-        HttpEntity<Cliente> entity = new HttpEntity<>(cliente);
+        var entity = new HttpEntity<>(cliente);
         var resposta = restTemplate.exchange("/clientes", HttpMethod.POST, entity, List.class);
         assertThat(resposta.getStatusCode(), is(HttpStatus.BAD_REQUEST));
         assertEquals(1, resposta.getBody().size());
@@ -43,7 +44,7 @@ class ClienteControllerTest {
     @Test
     public void naoDeveCadastratClienteComNomeInvalido() {
         cliente.setNome("");
-        HttpEntity<Cliente> entity = new HttpEntity<>(cliente);
+        var entity = new HttpEntity<>(cliente);
         var resposta = restTemplate.exchange("/clientes", HttpMethod.POST, entity, List.class);
         assertThat(resposta.getStatusCode(), is(HttpStatus.BAD_REQUEST));
         assertEquals(1, resposta.getBody().size());
@@ -51,12 +52,12 @@ class ClienteControllerTest {
 
     @Test
     public void deveCadastratCliente() {
-        var resposta = restTemplate.postForEntity("/clientes", cliente, Cliente.class);
+        var resposta = restTemplate.postForEntity("/clientes", cliente, ClienteDto.class);
 
         assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
         assertEquals(cliente.getNome(), resposta.getBody().getNome());
+        // assertEquals(cliente.getEndereco().toString(), resposta.getBody().getEndereco());
         assertEquals(cliente.getTelefone(), resposta.getBody().getTelefone());
-        assertEquals(cliente.getNome(), resposta.getBody().getNome());
     }
 
 }

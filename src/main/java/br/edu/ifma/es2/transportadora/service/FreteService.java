@@ -52,14 +52,24 @@ public class FreteService {
         return (peso.multiply(fixo)).add(taxa).setScale(2);
     }
 
-    @Transactional(readOnly = true)
     public Frete comMaiorValorDo(Cliente cliente) {
         return freteRepo.comMaiorValor(cliente);
     }
 
-    @Transactional(readOnly = true)
     public Destino cidadeComMaisFretes() {
         return freteRepo.cidadeComMaisFretes();
+    }
+
+    @Transactional
+    public Frete atualiza(Long id, Frete frete) {
+        var busca = freteRepo.findById(id);
+        if (busca.isPresent()) {
+            var freteSalvo = busca.get();
+            freteSalvo.setDescricao(frete.getDescricao());
+            return freteSalvo;
+        }
+
+        throw new RuntimeException("Frete não encontrado.");
     }
 
 }

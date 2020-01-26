@@ -17,12 +17,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
+import br.edu.ifma.es2.transportadora.controller.dto.FreteDto;
 import br.edu.ifma.es2.transportadora.controller.form.FreteForm;
 import br.edu.ifma.es2.transportadora.databuilder.ClienteBuilder;
 import br.edu.ifma.es2.transportadora.databuilder.DestinoBuilder;
+import br.edu.ifma.es2.transportadora.databuilder.FreteBuilder;
 import br.edu.ifma.es2.transportadora.entity.Cliente;
 import br.edu.ifma.es2.transportadora.entity.Destino;
-import br.edu.ifma.es2.transportadora.entity.Frete;
 import br.edu.ifma.es2.transportadora.repository.ClienteRepository;
 import br.edu.ifma.es2.transportadora.repository.DestinoRepository;
 
@@ -46,13 +47,17 @@ class FreteControllerTest {
         clienteRepo.save(cliente);
         destinoRepo.save(destino);
 
-        freteForm = FreteFormBuilder.umFrete().paraOCliente(cliente).comDestino(destino).comDescricao("Descrição")
-                .comPeso(100d).constroi();
+        freteForm = FreteBuilder.umFrete()
+                .paraOCliente(cliente)
+                .comDestino(destino)
+                .comDescricao("Descrição")
+                .comPeso(100d)
+                .constroiForm();
     }
 
     @Test
     public void deveCriarFrete() {
-        var entidade = restTemplate.postForEntity("/fretes", freteForm, Frete.class);
+        var entidade = restTemplate.postForEntity("/fretes", freteForm, FreteDto.class);
 
         assertThat(entidade.getStatusCode(), is(HttpStatus.CREATED));
         assertEquals(1, entidade.getBody().getId());
