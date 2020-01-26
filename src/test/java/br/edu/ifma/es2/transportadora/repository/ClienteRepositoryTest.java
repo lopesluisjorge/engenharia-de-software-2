@@ -21,7 +21,7 @@ class ClienteRepositoryTest {
     @Autowired
     private ClienteRepository clienteRepo;
     private Cliente cliente;
-    
+
     @BeforeEach
     public void before() {
         cliente = umCliente().comNome("João")
