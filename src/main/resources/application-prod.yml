@@ -1,11 +1,7 @@
 spring:
 
   profiles:
-<<<<<<< HEAD
     active: production
-=======
-    active: prod
->>>>>>> master
 
   datasource:
     url: $DATABASE_URL
