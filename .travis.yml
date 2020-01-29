@@ -2,5 +2,11 @@ language: java
 jdk:
   - openjdk11
 
-script:
-  - ./mvnw clean install
+after_success:
+  - "./mvnw jacoco:report coveralls:report -B"
+
+deploy:
+  provider: heroku
+  app: $APP
+  api_key:
+    secure: $TOKEN_HEROKU
