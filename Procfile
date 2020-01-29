@@ -1,1 +1,1 @@
-web: java -jar target/transportadora-*-SNAPSHOT.jar
+java -Dserver.port=$PORT $JAVA_OPTS -jar target/*.jar
