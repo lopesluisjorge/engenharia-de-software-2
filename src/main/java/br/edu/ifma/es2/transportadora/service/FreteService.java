@@ -2,10 +2,15 @@ package br.edu.ifma.es2.transportadora.service;
 
 import java.math.BigDecimal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.edu.ifma.es2.transportadora.controller.dto.FreteDto;
 import br.edu.ifma.es2.transportadora.controller.form.FreteForm;
 import br.edu.ifma.es2.transportadora.entity.Cliente;
 import br.edu.ifma.es2.transportadora.entity.Destino;
@@ -14,6 +19,8 @@ import br.edu.ifma.es2.transportadora.repository.FreteRepository;
 
 @Service
 public class FreteService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FreteService.class);
 
     @Autowired
     private FreteRepository freteRepo;
@@ -60,6 +67,10 @@ public class FreteService {
         return freteRepo.cidadeComMaisFretes();
     }
 
+    public Page<FreteDto> paginar(Pageable paginacao) {
+        return freteRepo.findAll(paginacao).map(FreteDto::new);
+    }
+
     @Transactional
     public Frete atualiza(Long id, Frete frete) {
         var busca = freteRepo.findById(id);
@@ -69,7 +80,22 @@ public class FreteService {
             return freteSalvo;
         }
 
-        throw new RuntimeException("Frete não encontrado.");
+        var ex = new RuntimeException("Frete não encontrado.");
+        logger.info(ex.getMessage());
+        throw ex;
+    }
+
+    @Transactional
+    public void remover(Long id) {
+        var busca = freteRepo.findById(id);
+        if (busca.isPresent()) {
+            var frete = busca.get();
+            freteRepo.delete(frete);
+        }
+
+        var ex = new RuntimeException("Frete não encontrado.");
+        logger.info(ex.getMessage());
+        throw ex;
     }
 
 }
